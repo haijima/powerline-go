@@ -100,6 +100,20 @@ Aliases:
 func cwdToPathSegments(p *powerline, cwd string) []pathSegment {
 	pathSegments := make([]pathSegment, 0)
 
+	out, err := runGitCommand("git", "rev-parse", "--show-toplevel")
+	if err == nil {
+		out = strings.TrimSpace(out)
+		ds := strings.Split(out, "/")
+		gopath, _ := os.LookupEnv("GOPATH")
+		if strings.HasPrefix(cwd, gopath+"/src") {
+			pathSegments = append(pathSegments, pathSegment{
+				path:  "@" + ds[len(ds)-2] + "/" + ds[len(ds)-1],
+				alias: true,
+			})
+			cwd = cwd[len(out):]
+		}
+	}
+
 	home, _ := os.LookupEnv("HOME")
 	if strings.HasPrefix(cwd, home) {
 		pathSegments = append(pathSegments, pathSegment{
