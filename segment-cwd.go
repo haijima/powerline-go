@@ -107,7 +107,7 @@ func cwdToPathSegments(p *powerline, cwd string) []pathSegment {
 		gopath, _ := os.LookupEnv("GOPATH")
 		if strings.HasPrefix(cwd, gopath+"/src") {
 			pathSegments = append(pathSegments, pathSegment{
-				path:  "@" + ds[len(ds)-2] + "/" + ds[len(ds)-1],
+				path: ds[len(ds)-2] + "/" + ds[len(ds)-1],
 				alias: true,
 			})
 			cwd = cwd[len(out):]
